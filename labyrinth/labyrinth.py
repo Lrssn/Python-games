@@ -1,6 +1,8 @@
 import sys, pygame, random, pyganim
 from pygame.locals import *
 pygame.init()
+from utils.createmap import *
+
 
 class Window:
     width = 800
@@ -43,7 +45,6 @@ class Player(object):
 class Wall(object):
     
     def __init__(self, pos):
-        walls.append(self)
         self.rect = pygame.Rect(pos[0], pos[1], 20, 20)
         
 class flag:
@@ -61,39 +62,60 @@ walls = [] # List to hold the walls
 player = Player() # Create the player
 
 # Holds the level layout in a list of strings.
-level = [
-"WWWWWWWWWWWWWWWWWWWW",
-"W                  W",
-"W         WWWWWW   W",
-"W   WWWW       W   W",
-"W   W        WWWW  W",
-"W WWW  WWWW        W",
-"W   W     W W      W",
-"W   W     W   WWW WW",
-"W   WWW WWW   W W  W",
-"W     W   W   W W  W",
-"WWW   W   WWWWW W  W",
-"W W      WW        W",
-"W W   WWWW   WWW   W",
-"W     W    E   W   W",
-"WWWWWWWWWWWWWWWWWWWW",
-]
+level = []
+nroflevels = 10
+for i in range(nroflevels):
+    level.append(createMap(window.width//20, window.height//20))
+#[
+#"WWWWWWWWWWWWWWWWWWWW",
+#"W                  W",
+#"W         WWWWWW   W",
+#"W   WWWW       W   W",
+#"W   W        WWWW  W",
+#"W WWW  WWWW        W",
+#"W   W     W W      W",
+#"W   W     W   WWW WW",
+#"W   WWW WWW   W W  W",
+#"W     W   W   W W  W",
+#"WWW   W   WWWWW W  W",
+#"W W      WW        W",
+#"W W   WWWW   WWW   W",
+#"W     W    E   W   W",
+#"WWWWWWWWWWWWWWWWWWWW",
+#]
 
 # Parse the level string above. W = wall, E = exit
-x = y = 0
-for row in level:
-    for col in row:
-        if col == "W":
-            Wall((x, y))
-        if col == "E":
-            end_rect = pygame.Rect(x, y, 20, 20)
-        x += 20
-    y += 20
-    x = 0
 
+currentlevel = 0
+def newmap(newlevel):
+    walls=[]
+    x = y = 0
+    for row in newlevel:
+        for col in row:
+            if col == "W":
+                walls.append(Wall((x, y)))
+            x += 20
+        y += 20
+        x = 0
+    return walls
+def setend(newlevel):
+    x = y = 0
+    for row in newlevel:
+        for col in row:
+            if col == "E":
+                return pygame.Rect(x, y, 20, 20)
+            x += 20
+        y += 20
+        x = 0
+nroflevels = 10
 running = True
+createMap(10, 10)
+maploaded = False
 while running:
-
+    if maploaded == False:
+        walls = newmap(level[currentlevel])
+        end_rect = setend(level[currentlevel])
+        maploaded = True
     clock.tick(60)
     
     for event in pygame.event.get():
@@ -116,9 +138,13 @@ while running:
         player.move(0, 2)
 
     if player.rect.colliderect(end_rect):
-        print("you win")
-        running = False
-        
+        if currentlevel == nroflevels - 1:
+            print("you win")
+            running = False
+        else:
+            currentlevel = currentlevel + 1
+            walls = newmap(level[currentlevel])
+            end_rect = setend(level[currentlevel])
 
     screen.fill(window.bg_color)         
     for wall in walls:
