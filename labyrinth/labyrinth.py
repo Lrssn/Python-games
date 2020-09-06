@@ -6,6 +6,7 @@ import pygame.font
 # custom imports
 from utils.createmap import *
 from player import *
+from map import * 
 
 # system init
 pygame.init()
@@ -22,6 +23,7 @@ clock = pygame.time.Clock()
 
 # game init
 player = Player()
+map = Map(window.width, window.height)
 sprites = []
 sprites.append(pygame.image.load("assets/images/ground0.png"))
 sprites.append(pygame.image.load("assets/images/ground1.png"))
@@ -85,7 +87,7 @@ while running:
 
     # render
     screen.fill(window.bg_color)
-
+    map.render(screen)
     player.render(screen)
     
     #text/ui

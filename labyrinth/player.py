@@ -50,5 +50,5 @@ class Player(object):
     movementspeed = 100
     rotated_image = None
     angle = 0
-    pos = [0,0]
+    pos = [80,80]
     sprite = pygame.image.load("assets/images/player.png")

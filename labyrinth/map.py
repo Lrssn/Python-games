@@ -5,6 +5,4 @@ class Map(object):
         self.rect = pygame.Rect(0, 0, sizeX, sizeY)
     
     def render(self, screen):
-        
-
-    rect = None
+        pygame.draw.rect(screen, (0, 255, 0), self.rect)
