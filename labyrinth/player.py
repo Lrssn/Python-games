@@ -1,8 +1,13 @@
 import pygame
+import pyganim
 class Player(object):
     
     def __init__(self):
         self.rect = pygame.Rect(80, 80, 20, 20)
+        self.images = pyganim.getImagesFromSpriteSheet("assets/images/test player.png", rects = self.rects)
+        self.frames = list(zip(self.images, [400, 400, 400, 400]))
+        self.animObj = pyganim.PygAnimation(self.frames)
+        self.animObj.play()
         self.rotate(0)
     
     def move_to(self, x, y):
@@ -18,11 +23,11 @@ class Player(object):
         self.rect.y = int(self.pos[1])
         # rotation
         if dx == 1 and dy == 0:
-            self.rotate(-90)
+            self.rotate(270)
         elif dx == 1 and dy == 1:
-            self.rotate(-135)
+            self.rotate(225)
         elif dx == 1 and dy == -1:
-            self.rotate(-45)
+            self.rotate(315)
         elif dx == -1 and dy == 0:
             self.rotate(90)
         elif dx == -1 and dy == 1:
@@ -38,17 +43,25 @@ class Player(object):
         return self.pos
 
     def rotate(self, angle):
-        self.rotated_image = pygame.transform.rotate(self.sprite, angle)
-        self.angle = angle
+        #self.rotated_image = pygame.transform.rotate(self.sprite, angle)
+        if self.angle != angle:
+            self.animObj.rotate(360-self.angle)
+            self.angle = angle
+            self.animObj.rotate(angle)
+        
     
     def set_movespeed(self, newspeed):
         self.movementspeed = newspeed
 
     def render(self, screen):
-        screen.blit(self.rotated_image, self.rect)
+        self.animObj.blit(screen, self.rect)
+        
         
     movementspeed = 100
-    rotated_image = None
     angle = 0
     pos = [80,80]
-    sprite = pygame.image.load("assets/images/player.png")
+    rects = [(0, 0, 16, 16),
+            (16, 0, 16, 16),
+            (0, 16, 16, 16),
+            (16, 16, 16, 16)]
+    animObj = None
