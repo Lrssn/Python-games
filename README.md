@@ -1,2 +1,8 @@
 # Python-games
-Created using pygame and pyganim
+
+## Labyrinth
+
+dependencies:
+-pygame
+-pyganim
+-numpy
