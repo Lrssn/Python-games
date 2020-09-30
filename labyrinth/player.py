@@ -17,17 +17,13 @@ class Player(object):
         self.rect.y = int(self.pos[1])
 
     def move(self, dx, dy, deltatime):
-        self.pos[0] += dx*self.movementspeed*deltatime
-        self.pos[1] += dy*self.movementspeed*deltatime
-        self.rect.x = int(self.pos[0])
-        self.rect.y = int(self.pos[1])
         # rotation
         if dx == 1 and dy == 0:
-            self.rotate(270)
+            self.rotate(-90)
         elif dx == 1 and dy == 1:
-            self.rotate(225)
+            self.rotate(-135)
         elif dx == 1 and dy == -1:
-            self.rotate(315)
+            self.rotate(-45)
         elif dx == -1 and dy == 0:
             self.rotate(90)
         elif dx == -1 and dy == 1:
@@ -38,6 +34,10 @@ class Player(object):
             self.rotate(180)
         elif dx == 0 and dy == -1:
             self.rotate(0)
+        self.pos[0] += dx*self.movementspeed*deltatime
+        self.pos[1] += dy*self.movementspeed*deltatime
+        self.rect.x = int(self.pos[0])
+        self.rect.y = int(self.pos[1])
     
     def get_pos(self):
         return self.pos
@@ -45,9 +45,13 @@ class Player(object):
     def rotate(self, angle):
         #self.rotated_image = pygame.transform.rotate(self.sprite, angle)
         if self.angle != angle:
-            self.animObj.rotate(360-self.angle)
+            #this is stupid but it works TODO: make better i guess
+            tempanim = pyganim.PygAnimation(self.frames)
+            tempanim.play()
+            #self.animObj.rotate(-self.angle)
             self.angle = angle
-            self.animObj.rotate(angle)
+            tempanim.rotate(angle)
+            self.animObj = tempanim
         
     
     def set_movespeed(self, newspeed):
@@ -64,4 +68,5 @@ class Player(object):
             (16, 0, 16, 16),
             (0, 16, 16, 16),
             (16, 16, 16, 16)]
+    drawrect = pygame.Rect(80, 80, 20, 20)
     animObj = None

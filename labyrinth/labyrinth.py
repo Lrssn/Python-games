@@ -82,7 +82,7 @@ while running:
     if movement[0] != 0 or movement[1] != 0:
         player.move(movement[0], movement[1], deltatime)
         
-    fpstext =myfont.render(str(clock.get_fps()), True, (0, 0, 0))
+    fpstext = myfont.render(str(clock.get_fps()), True, (0, 0, 0))
 
 
     # render
@@ -94,7 +94,6 @@ while running:
     pygame.draw.rect(screen, (255, 255, 255), ui_rect)
     pygame.draw.rect(screen, (125, 125, 0), level_rect)
     pygame.draw.rect(screen, (255, 0, 0), close_rect)
-
     screen.blit(fpstext, (close_rect.left, close_rect.top ))
     
     pygame.display.flip()
