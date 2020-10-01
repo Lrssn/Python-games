@@ -68,5 +68,4 @@ class Player(object):
             (16, 0, 16, 16),
             (0, 16, 16, 16),
             (16, 16, 16, 16)]
-    drawrect = pygame.Rect(80, 80, 20, 20)
     animObj = None
