@@ -16,7 +16,7 @@ class Player(object):
         self.rect.x = int(self.pos[0])
         self.rect.y = int(self.pos[1])
 
-    def move(self, dx, dy, deltatime):
+    def move(self, dx, dy, deltatime, camera):
         # rotation
         if dx == 1 and dy == 0:
             self.rotate(-90)
