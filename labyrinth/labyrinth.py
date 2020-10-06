@@ -1,12 +1,12 @@
 # system imports
 import sys, pygame, random, pyganim
 from pygame.locals import *
-import pygame.font
 
 # custom imports
-from utils.createmap import *
 from player import *
 from map import * 
+from utils.createmap import *
+from utils.text_renderer import *
 
 # system init
 pygame.init()
@@ -32,14 +32,12 @@ class Camera:
 window = Window()
 camera = Camera()
 screen = pygame.display.set_mode([window.width, window.height])
-pygame.font.init()
-myfont = pygame.font.SysFont('arial', 30)
 clock = pygame.time.Clock()
 
 # game init
 player = Player()
 map = Map(window, camera, 100, 100)
-
+text = Text_renderer()
 
 # UI setup
 ui_rect = pygame.Rect(0, 0, window.width, 40)
@@ -88,7 +86,6 @@ while running:
     if movement[0] != 0 or movement[1] != 0:
         player.move(movement[0], movement[1], deltatime, camera)
         
-    fpstext = myfont.render(str(clock.get_fps()), True, (0, 0, 0))
 
 
     # render
@@ -97,16 +94,16 @@ while running:
     prerendertime  = pygame.time.get_ticks()
     map.render(camera, screen)
     afterrendertime = pygame.time.get_ticks() - prerendertime
-    rendertext = myfont.render(str(afterrendertime), True, (0, 0, 0))
-    
+        
     player.render(screen)
 
     #text/ui
+    # TODO: make class handle text
     pygame.draw.rect(screen, (255, 255, 255), ui_rect)
     pygame.draw.rect(screen, (125, 125, 0), level_rect)
     pygame.draw.rect(screen, (255, 0, 0), close_rect)
-    screen.blit(fpstext, (close_rect.left, close_rect.top ))
-    screen.blit(rendertext, (level_rect.left, level_rect.top ))
+    text.render(screen, clock.get_fps(), (close_rect.left, close_rect.top ))
+    text.render(screen, afterrendertime, (level_rect.left, level_rect.top ))
     
     pygame.display.flip()
     pygame.event.pump()

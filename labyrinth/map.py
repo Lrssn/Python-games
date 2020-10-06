@@ -1,5 +1,5 @@
 import pygame
-from Mapsquare import *
+from mapsquare import *
 
 class Map(object):
     def __init__(self, window, camera, sizeX, sizeY):
