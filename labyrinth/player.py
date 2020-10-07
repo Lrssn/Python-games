@@ -3,7 +3,7 @@ import pyganim
 class Player(object):
     
     def __init__(self):
-        self.rect = pygame.Rect(80, 80, 20, 20)
+        self.rect = pygame.Rect(120, 120, 20, 20)
         self.images = pyganim.getImagesFromSpriteSheet("assets/images/test player.png", rects = self.rects)
         self.frames = list(zip(self.images, [400, 400, 400, 400]))
         self.animObj = pyganim.PygAnimation(self.frames)
@@ -18,6 +18,7 @@ class Player(object):
 
     def move(self, dx, dy, deltatime, camera):
         # rotation
+
         if dx == 1 and dy == 0:
             self.rotate(-90)
         elif dx == 1 and dy == 1:
@@ -34,11 +35,28 @@ class Player(object):
             self.rotate(180)
         elif dx == 0 and dy == -1:
             self.rotate(0)
-        self.pos[0] += dx*self.movementspeed*deltatime
-        self.pos[1] += dy*self.movementspeed*deltatime
-        self.rect.x = int(self.pos[0])
-        self.rect.y = int(self.pos[1])
-    
+        #move camera
+        camera_xdiff = 0
+        camera_ydiff = 0
+        camera_size = (camera.sizex, camera.sizey)
+
+        if dx == -1 and self.pos[0] <= 100:
+            camera_xdiff = dx*self.movementspeed*deltatime
+        elif dx == 1 and self.pos[0] >= camera_size[0]-100:
+            camera_xdiff = dx*self.movementspeed*deltatime
+        if dy == -1 and self.pos[1] <= 100:
+            camera_ydiff = dy*self.movementspeed*deltatime
+        elif dy == 1 and self.pos[1] >= camera_size[1]-100:
+            camera_ydiff = dy*self.movementspeed*deltatime
+        
+        if camera_xdiff != 0 or camera_ydiff != 0:
+            camera.move(camera_xdiff, camera_ydiff)
+        else:
+            self.pos[0] += dx*self.movementspeed*deltatime
+            self.pos[1] += dy*self.movementspeed*deltatime
+            self.rect.x = int(self.pos[0])
+            self.rect.y = int(self.pos[1])
+
     def get_pos(self):
         return self.pos
 
@@ -63,7 +81,7 @@ class Player(object):
         
     movementspeed = 100
     angle = 0
-    pos = [80,80]
+    pos = [120,120]
     rects = [(0, 0, 16, 16),
             (16, 0, 16, 16),
             (0, 16, 16, 16),

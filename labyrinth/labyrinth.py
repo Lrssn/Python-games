@@ -16,8 +16,16 @@ class Window:
     bg_color = 0, 0, 0
 
 class Camera:
-    position = [50, 50]
-    scale = 10
+    position = [0, 0]
+    scalenumber = 10
+    boxsize = 100
+    
+    def __init__(self, sizex, sizey):
+        self.sizex = sizex
+        self.sizey = sizey
+        self.scalex = self.sizex / self.boxsize
+        self.scaley = self.sizey / self.boxsize
+
     def move(self, xdiff, ydiff):
         self.position[0] += xdiff
         self.position[1] += ydiff
@@ -25,12 +33,15 @@ class Camera:
         self.position[0] = xpos
         self.position[1] = ypos
     def changescale(self, newscale):
-        self.scale = newscale
+        self.boxsize = newscale
+        self.scalex = self.sizex / self.boxsize
+        self.scaley = self.sizey / self.boxsize
+
         #updatemap?
 
 
 window = Window()
-camera = Camera()
+camera = Camera(window.width, window.height)
 screen = pygame.display.set_mode([window.width, window.height])
 clock = pygame.time.Clock()
 
@@ -77,9 +88,9 @@ while running:
         movement[1] -= 1
     if keys[K_DOWN] or keys[K_s]:
         movement[1] += 1
-    if keys[K_DOWN] or keys[K_u]:
+    if keys[K_u]:
         camera.move_to(10,10)
-    if keys[K_DOWN] or keys[K_i]:
+    if keys[K_i]:
         camera.move_to(50,50)
 
 

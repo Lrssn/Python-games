@@ -5,8 +5,8 @@ class Map(object):
     def __init__(self, window, camera, sizeX, sizeY):
         self.window_width = window.width
         self.window_height = window.height
-        self.squarewidth = int(self.window_width/camera.scale)
-        self.squareheight = int(self.window_height/camera.scale)
+        self.squarewidth = int(camera.boxsize)
+        self.squareheight = int(camera.boxsize)
 
         
         for j in range(sizeY):
@@ -16,13 +16,13 @@ class Map(object):
                 subSquares.append(x)
             self.mapsquares.append(subSquares)
     
-    def render(self, camera, screen):
-        #pygame.draw.rect(screen, (0, 255, 0), self.rect)
-        for j in range(camera.position[1], camera.position[1] + camera.scale):
-            for i in range(camera.position[0], camera.position[0] + camera.scale):
-                rect = pygame.Rect((i-camera.position[0])*self.squarewidth, (j-camera.position[1])*self.squareheight, self.squarewidth, self.squareheight)
-                self.mapsquares[j][i].render(screen, rect)
+    def render(self, camera, screen):        
+        for j in range(round(camera.scaley)):
+            for i in range(round(camera.scalex)):
+                pos=camera.position
+                rect = pygame.Rect(i*self.squarewidth, j*self.squareheight, self.squarewidth, self.squareheight)
+                self.mapsquares[int(pos[1]/self.squareheight)+j][int(pos[0]/self.squarewidth)+i].render(screen, rect)
 
 
-    squaresize = 40
+    
     mapsquares = []
