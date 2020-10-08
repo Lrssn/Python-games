@@ -16,19 +16,22 @@ class Window:
     bg_color = 0, 0, 0
 
 class Camera:
-    position = [0, 0]
+    position = [2000, 3000]
     scalenumber = 10
     boxsize = 100
     
-    def __init__(self, sizex, sizey):
+    def __init__(self, sizex, sizey, mapsize):
         self.sizex = sizex
         self.sizey = sizey
         self.scalex = self.sizex / self.boxsize
         self.scaley = self.sizey / self.boxsize
+        self.mapsize = mapsize
 
     def move(self, xdiff, ydiff):
-        self.position[0] += xdiff
-        self.position[1] += ydiff
+        if (self.position[0]+xdiff) > 0 and (self.position[0]+xdiff) < (self.mapsize[0]*self.boxsize)-self.sizex:
+            self.position[0] += xdiff
+        if self.position[1]+ydiff > 0 and self.position[1]+ydiff < (self.mapsize[1]*self.boxsize)-self.sizey:
+            self.position[1] += ydiff
     def move_to(self, xpos, ypos):
         self.position[0] = xpos
         self.position[1] = ypos
@@ -39,15 +42,16 @@ class Camera:
 
         #updatemap?
 
-
+mapsize = (100, 100)
 window = Window()
-camera = Camera(window.width, window.height)
+camera = Camera(window.width, window.height, mapsize)
 screen = pygame.display.set_mode([window.width, window.height])
 clock = pygame.time.Clock()
 
 # game init
+
 player = Player()
-map = Map(window, camera, 100, 100)
+map = Map(window, camera, mapsize[0], mapsize[1])
 text = Text_renderer()
 
 # UI setup

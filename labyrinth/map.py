@@ -17,10 +17,10 @@ class Map(object):
             self.mapsquares.append(subSquares)
     
     def render(self, camera, screen):        
-        for j in range(round(camera.scaley)):
-            for i in range(round(camera.scalex)):
+        for j in range(-1,round(camera.scaley)+1):
+            for i in range(-1,round(camera.scalex)+1):
                 pos=camera.position
-                rect = pygame.Rect(i*self.squarewidth, j*self.squareheight, self.squarewidth, self.squareheight)
+                rect = pygame.Rect(i*self.squarewidth - pos[0] % camera.boxsize, j*self.squareheight - pos[1] % camera.boxsize, self.squarewidth, self.squareheight)
                 self.mapsquares[int(pos[1]/self.squareheight)+j][int(pos[0]/self.squarewidth)+i].render(screen, rect)
 
 

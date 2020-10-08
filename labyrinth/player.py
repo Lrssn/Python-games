@@ -35,27 +35,31 @@ class Player(object):
             self.rotate(180)
         elif dx == 0 and dy == -1:
             self.rotate(0)
+
+        xdiff = dx*self.movementspeed*deltatime
+        ydiff = dy*self.movementspeed*deltatime
+
         #move camera
         camera_xdiff = 0
         camera_ydiff = 0
         camera_size = (camera.sizex, camera.sizey)
 
         if dx == -1 and self.pos[0] <= 100:
-            camera_xdiff = dx*self.movementspeed*deltatime
+            camera_xdiff = xdiff
         elif dx == 1 and self.pos[0] >= camera_size[0]-100:
-            camera_xdiff = dx*self.movementspeed*deltatime
+            camera_xdiff = xdiff
         if dy == -1 and self.pos[1] <= 100:
-            camera_ydiff = dy*self.movementspeed*deltatime
+            camera_ydiff = ydiff
         elif dy == 1 and self.pos[1] >= camera_size[1]-100:
-            camera_ydiff = dy*self.movementspeed*deltatime
+            camera_ydiff = ydiff
         
         if camera_xdiff != 0 or camera_ydiff != 0:
             camera.move(camera_xdiff, camera_ydiff)
-        else:
-            self.pos[0] += dx*self.movementspeed*deltatime
-            self.pos[1] += dy*self.movementspeed*deltatime
-            self.rect.x = int(self.pos[0])
-            self.rect.y = int(self.pos[1])
+        
+        self.pos[0] += (xdiff - camera_xdiff)
+        self.pos[1] += (ydiff - camera_ydiff)
+        self.rect.x = int(self.pos[0])
+        self.rect.y = int(self.pos[1])
 
     def get_pos(self):
         return self.pos
