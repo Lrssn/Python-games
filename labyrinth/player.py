@@ -2,13 +2,10 @@ import pygame
 import pyganim
 class Player(object):
     
-    def __init__(self):
-        self.rect = pygame.Rect(120, 120, 20, 20)
+    def __init__(self, size):
+        self.rect = pygame.Rect(120, 120, size, size)
         self.images = pyganim.getImagesFromSpriteSheet("assets/images/test player.png", rects = self.rects)
-        self.frames = list(zip(self.images, [400, 400, 400, 400]))
-        self.animObj = pyganim.PygAnimation(self.frames)
-        self.animObj.play()
-        self.rotate(0)
+        self.rescale_sprites(size)
     
     def move_to(self, x, y):
         self.pos[0] = x
@@ -81,8 +78,19 @@ class Player(object):
 
     def render(self, screen):
         self.animObj.blit(screen, self.rect)
+    
+    def rescale_sprites(self, new_squaresize):
+        self.squaresize = new_squaresize
+        self.scaled_sprites = []
+        for i in range(len(self.images)):
+            image = pygame.transform.scale(self.images[i], (self.squaresize, self.squaresize))
+            self.scaled_sprites.append(image)
         
-        
+        self.frames = list(zip(self.scaled_sprites, [400, 400, 400, 400]))
+        self.animObj = pyganim.PygAnimation(self.frames)
+        self.animObj.play()
+        self.rotate(0)
+
     movementspeed = 100
     angle = 0
     pos = [120,120]

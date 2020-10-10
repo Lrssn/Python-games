@@ -16,7 +16,7 @@ class Window:
     bg_color = 0, 0, 0
 
 class Camera:
-    position = [2000, 3000]
+    position = [100, 100]
     scalenumber = 10
     boxsize = 100
     
@@ -50,7 +50,7 @@ clock = pygame.time.Clock()
 
 # game init
 
-player = Player()
+player = Player(camera.boxsize)
 map = Map(window, camera, mapsize[0], mapsize[1])
 text = Text_renderer()
 
@@ -93,15 +93,17 @@ while running:
     if keys[K_DOWN] or keys[K_s]:
         movement[1] += 1
     if keys[K_u]:
-        camera.move_to(10,10)
+        camera.changescale(50)
+        player.rescale_sprites(camera.boxsize)
+        map.rescale_sprites(camera.boxsize)
     if keys[K_i]:
-        camera.move_to(50,50)
+        camera.changescale(100)
+        player.rescale_sprites(camera.boxsize)
+        map.rescale_sprites(camera.boxsize)
 
 
     if movement[0] != 0 or movement[1] != 0:
         player.move(movement[0], movement[1], deltatime, camera)
-        
-
 
     # render
     screen.fill(window.bg_color)
