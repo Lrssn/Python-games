@@ -3,9 +3,12 @@ import pyganim
 class Player(object):
     
     def __init__(self, size):
+        self.squaresize = size
         self.rect = pygame.Rect(120, 120, size, size)
         self.images = pyganim.getImagesFromSpriteSheet("assets/images/test player.png", rects = self.rects)
+        
         self.rescale_sprites(size)
+        
     
     def move_to(self, x, y):
         self.pos[0] = x
@@ -80,6 +83,11 @@ class Player(object):
         self.animObj.blit(screen, self.rect)
     
     def rescale_sprites(self, new_squaresize):
+        scalechange = new_squaresize / self.squaresize
+        self.move_to(self.pos[0]*scalechange, self.pos[1]*scalechange)
+        self.movementspeed *= scalechange
+        #self.pos[0]*=scalechange
+        #self.pos[1]*=scalechange
         self.squaresize = new_squaresize
         self.scaled_sprites = []
         for i in range(len(self.images)):

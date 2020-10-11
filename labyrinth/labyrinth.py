@@ -36,6 +36,7 @@ class Camera:
         self.position[0] = xpos
         self.position[1] = ypos
     def changescale(self, newscale):
+        # TODO: change position based on player position
         self.boxsize = newscale
         self.scalex = self.sizex / self.boxsize
         self.scaley = self.sizey / self.boxsize
