@@ -16,15 +16,17 @@ class Window:
 
 class Camera:
     position = [100, 100]
-    scalenumber = 10
+    scalenumber = 20
     boxsize = 100
     
     def __init__(self, sizex, sizey, mapsize):
         self.sizex = sizex
         self.sizey = sizey
+        self.boxsize = int(self.sizex / self.scalenumber)
         self.scalex = self.sizex / self.boxsize
         self.scaley = self.sizey / self.boxsize
         self.mapsize = mapsize
+        
 
     def move(self, xdiff, ydiff):
         if (self.position[0]+xdiff) > 0 and (self.position[0]+xdiff) < (self.mapsize[0]*self.boxsize)-self.sizex:
@@ -36,7 +38,7 @@ class Camera:
         self.position[1] = ypos
     def changescale(self, newscale):
         # TODO: change position based on player position
-        self.boxsize = newscale
+        self.boxsize = int(self.sizex/newscale)
         self.scalex = self.sizex / self.boxsize
         self.scaley = self.sizey / self.boxsize
 
@@ -93,11 +95,11 @@ while running:
     if keys[K_DOWN] or keys[K_s]:
         movement[1] += 1
     if keys[K_u]:
-        camera.changescale(50)
+        camera.changescale(10)
         player.rescale_sprites(camera.boxsize)
         map.rescale_sprites(camera.boxsize)
     if keys[K_i]:
-        camera.changescale(100)
+        camera.changescale(5)
         player.rescale_sprites(camera.boxsize)
         map.rescale_sprites(camera.boxsize)
 
