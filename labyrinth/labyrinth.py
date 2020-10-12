@@ -4,8 +4,7 @@ from pygame.locals import *
 
 # custom imports
 from player import *
-from map import * 
-from utils.createmap import *
+from map import *
 from utils.text_renderer import *
 
 # system init
