@@ -19,13 +19,13 @@ class Camera:
     scalenumber = 20
     boxsize = 100
     
-    def __init__(self, sizex, sizey, mapsize):
+    def __init__(self, sizex, sizey):
         self.sizex = sizex
         self.sizey = sizey
         self.boxsize = int(self.sizex / self.scalenumber)
         self.scalex = self.sizex / self.boxsize
         self.scaley = self.sizey / self.boxsize
-        self.mapsize = mapsize
+        self.mapsize = 0
         self.bufferzone = self.sizex / 10
         
 
@@ -45,16 +45,16 @@ class Camera:
 
         #updatemap?
 
-mapsize = (100, 100)
 window = Window()
-camera = Camera(window.width, window.height, mapsize)
+camera = Camera(window.width, window.height)
 screen = pygame.display.set_mode([window.width, window.height])
 clock = pygame.time.Clock()
 
 # game init
 
 player = Player(camera.boxsize, camera.bufferzone)
-map = Map(window, camera, mapsize[0], mapsize[1])
+map = Map(window, camera)
+camera.mapsize = (map.sizex, map.sizey)
 text = Text_renderer()
 
 # UI setup
@@ -68,9 +68,11 @@ while running:
     deltatime  = float(clock.get_time()/1000) #newtime - oldtime
     clock.tick()
     
+    #process player movement
+    movement = [0, 0]
     #handle input
     keys = pygame.key.get_pressed()
-    
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -79,14 +81,24 @@ while running:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
+            if event.key == pygame.K_m:
+                map.savemap()
+            if event.key == pygame.K_u:
+                camera.changescale(10)
+                player.rescale_sprites(camera.boxsize)
+                map.rescale_sprites(camera.boxsize)
+            if event.key == pygame.K_i:
+                camera.changescale(5)
+                player.rescale_sprites(camera.boxsize)
+                map.rescale_sprites(camera.boxsize)
+
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             #process mouseclicks
             pos = pygame.mouse.get_pos()
             if close_rect.collidepoint(pos):
                 pygame.quit() 
                 sys.exit()
-    #process player movement
-    movement = [0, 0]
+    
     if keys[K_LEFT] or keys[K_a]:
         movement[0] -= 1
     if keys[K_RIGHT] or keys[K_d]:
@@ -95,15 +107,6 @@ while running:
         movement[1] -= 1
     if keys[K_DOWN] or keys[K_s]:
         movement[1] += 1
-    if keys[K_u]:
-        camera.changescale(10)
-        player.rescale_sprites(camera.boxsize)
-        map.rescale_sprites(camera.boxsize)
-    if keys[K_i]:
-        camera.changescale(5)
-        player.rescale_sprites(camera.boxsize)
-        map.rescale_sprites(camera.boxsize)
-
 
     if movement[0] != 0 or movement[1] != 0:
         player.move(movement[0], movement[1], deltatime, camera)

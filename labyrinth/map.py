@@ -1,9 +1,9 @@
-import pygame
+import pygame, json
 from mapsquare import *
 from utils.map_utils import *
 
 class Map(object):
-    def __init__(self, window, camera, sizeX, sizeY):
+    def __init__(self, window, camera):
         #init variables
         self.mapsquares = list()
         self.layer0 = list()
@@ -11,29 +11,32 @@ class Map(object):
         self.layer1 = list()
         self.layer1_scaled = list()
         #set variables
-        self.sizex = sizeX
-        self.sizey = sizeY
+        mapjson = loadmap("map1.map")
+        self.sizex = mapjson['sizex']
+        self.sizey = mapjson['sizey']
         self.window_width = window.width
         self.window_height = window.height
         self.squaresize = int(camera.boxsize)
         #load sprites
         self.layer0.append(pygame.image.load("assets/images/ground0.png"))
+        self.layer0.append(pygame.image.load("assets/images/ground1.png"))
         self.layer1.append(pygame.image.load("assets/images/flag.png"))
         #create map
         #load layer0
-        mapjson = loadmap("map1.map")
-        for j in range(sizeY):
+        
+        map_string = parsemap(mapjson['layer0'], mapjson['sizex'], mapjson['sizey'])
+        for j in range(self.sizey):
             subSquares = []
-            for i in range(sizeX):
+            for i in range(self.sizex):
                 # TODO: use noise to map spriteid
-                x = Mapsquare(mapjson[j][i])
-                subSquares.append( x )
+                x = Mapsquare(map_string[j][i])
+                subSquares.append(x)
             self.mapsquares.append(subSquares)
         #load layer1
         self.mapsquares[5][5].add_layer(0)
         #set correct scale
         self.rescale_sprites(self.squaresize)
-        #savemap("map1.map", self.mapsquares, self.sizex, self.sizey)
+        
     
     def render_background(self, camera, screen):        
         for j in range(-1,round(camera.scaley)+1):
@@ -68,7 +71,9 @@ class Map(object):
             image = pygame.transform.scale(self.layer1[i], (self.squaresize, self.squaresize))
             self.layer1_scaled.append(image)
 
-    
+    def savemap(self):
+        savemap("map1.map", self.mapsquares, self.sizex, self.sizey)
+        print("map saved")
     
     
     

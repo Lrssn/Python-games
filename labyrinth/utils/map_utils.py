@@ -4,7 +4,7 @@ def loadmap(map_file):
     f = open('assets/maps/' + map_file)
     x = json.load(f)
     f.close()
-    return parsemap(x['map'], x['sizex'], x['sizey'])
+    return x
 
 def parsemap(map_string, sizex, sizey):
     final_map = []
@@ -22,7 +22,7 @@ def savemap(map_name, map_string, sizex, sizey):
         for j in range(sizex):
             x += str(map_string[j][i].spriteids[0]) + " "
     
-    y = json.dumps({"map_name":map_name, "map": x, "sizex": sizex, "sizey":sizey})
+    y = json.dumps({"map_name":map_name, "sizex": sizex, "sizey":sizey, "layer0": x}, indent=4)
     f = open('assets/maps/' + map_name, "w")
     f.write(y)
     f.close()
