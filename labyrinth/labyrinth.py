@@ -26,6 +26,7 @@ class Camera:
         self.scalex = self.sizex / self.boxsize
         self.scaley = self.sizey / self.boxsize
         self.mapsize = mapsize
+        self.bufferzone = self.sizex / 10
         
 
     def move(self, xdiff, ydiff):
@@ -52,7 +53,7 @@ clock = pygame.time.Clock()
 
 # game init
 
-player = Player(camera.boxsize)
+player = Player(camera.boxsize, camera.bufferzone)
 map = Map(window, camera, mapsize[0], mapsize[1])
 text = Text_renderer()
 

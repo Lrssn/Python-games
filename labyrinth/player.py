@@ -2,11 +2,12 @@ import pygame
 import pyganim
 class Player(object):
     
-    def __init__(self, size):
+    def __init__(self, size, bufferzone):
         self.squaresize = size
         self.rect = pygame.Rect(120, 120, size, size)
         self.images = pyganim.getImagesFromSpriteSheet("assets/images/test player.png", rects = self.rects)
         self.rescale_sprites(size)
+        self.bufferzone = bufferzone
     
     def move_to(self, x, y):
         self.pos[0] = x
@@ -42,13 +43,13 @@ class Player(object):
         camera_ydiff = 0
         camera_size = (camera.sizex, camera.sizey)
 
-        if dx == -1 and self.pos[0] <= 100:
+        if dx == -1 and self.pos[0] <= self.bufferzone:
             camera_xdiff = xdiff
-        elif dx == 1 and self.pos[0] >= camera_size[0]-100:
+        elif dx == 1 and self.pos[0] >= camera_size[0]-self.bufferzone:
             camera_xdiff = xdiff
-        if dy == -1 and self.pos[1] <= 100:
+        if dy == -1 and self.pos[1] <= self.bufferzone:
             camera_ydiff = ydiff
-        elif dy == 1 and self.pos[1] >= camera_size[1]-100:
+        elif dy == 1 and self.pos[1] >= camera_size[1]-self.bufferzone:
             camera_ydiff = ydiff
         
         if camera_xdiff != 0 or camera_ydiff != 0:
