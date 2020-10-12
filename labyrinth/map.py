@@ -1,5 +1,6 @@
 import pygame
 from mapsquare import *
+from utils.map_utils import *
 
 class Map(object):
     def __init__(self, window, camera, sizeX, sizeY):
@@ -10,6 +11,8 @@ class Map(object):
         self.layer1 = list()
         self.layer1_scaled = list()
         #set variables
+        self.sizex = sizeX
+        self.sizey = sizeY
         self.window_width = window.width
         self.window_height = window.height
         self.squaresize = int(camera.boxsize)
@@ -18,16 +21,19 @@ class Map(object):
         self.layer1.append(pygame.image.load("assets/images/flag.png"))
         #create map
         #load layer0
+        mapjson = loadmap("map1.map")
         for j in range(sizeY):
             subSquares = []
             for i in range(sizeX):
-                x = Mapsquare(0)
+                # TODO: use noise to map spriteid
+                x = Mapsquare(mapjson[j][i])
                 subSquares.append( x )
             self.mapsquares.append(subSquares)
         #load layer1
         self.mapsquares[5][5].add_layer(0)
         #set correct scale
         self.rescale_sprites(self.squaresize)
+        #savemap("map1.map", self.mapsquares, self.sizex, self.sizey)
     
     def render_background(self, camera, screen):        
         for j in range(-1,round(camera.scaley)+1):
