@@ -1,5 +1,6 @@
 import sys, pygame
 from pygame.locals import *
+from createmap import *
 
 pygame.init()
 class Window:
@@ -11,7 +12,8 @@ window = Window()
 screen = pygame.display.set_mode([window.width, window.height])
 clock = pygame.time.Clock()
 rect = pygame.Rect(0, 0, window.width, window.height)
-
+createmap(sizex = 800, sizey = 600, scale = 200, octaves = 6, persistence = 0.5, lacunarity = 2.0)
+image = pygame.image.load('noise.png').convert()
 running = True
 while running:
     # system
@@ -31,7 +33,8 @@ while running:
                 sys.exit()
     
     #renderloop
-    pygame.draw.rect(screen, (0, 255, 255), rect)
+    #pygame.draw.rect(screen, (0, 255, 255), rect)
+    screen.blit(image, rect)
 
     pygame.display.flip()
     pygame.event.pump()
