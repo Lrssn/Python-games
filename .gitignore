@@ -6,3 +6,4 @@ labyrinth/dist
 labyrinth/.idea
 labyrinth/__pycache__
 labyrinth/utils/__pycache__
+testbed/__pycache__
