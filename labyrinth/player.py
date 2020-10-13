@@ -88,7 +88,7 @@ class Player(object):
         self.scaled_sprites = []
         for i in range(len(self.images)):
             image = pygame.transform.scale(self.images[i], (self.squaresize, self.squaresize))
-            self.scaled_sprites.append(image)
+            self.scaled_sprites.append(image.convert_alpha())
         
         self.frames = list(zip(self.scaled_sprites, [1000, 1000, 1000, 1000]))
         self.animObj = pyganim.PygAnimation(self.frames)

@@ -18,9 +18,9 @@ class Map(object):
         self.window_height = window.height
         self.squaresize = int(camera.boxsize)
         #load sprites
-        self.layer0.append(pygame.image.load("assets/images/ground0.png"))
-        self.layer0.append(pygame.image.load("assets/images/ground1.png"))
-        self.layer1.append(pygame.image.load("assets/images/flag.png"))
+        self.layer0.append(pygame.image.load("assets/images/ground0.png").convert())
+        self.layer0.append(pygame.image.load("assets/images/ground1.png").convert())
+        self.layer1.append(pygame.image.load("assets/images/flag.png").convert_alpha())
         #create map
         #load layer0
         
