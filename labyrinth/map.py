@@ -1,6 +1,7 @@
 import pygame, json
 from mapsquare import *
 from utils.map_utils import *
+import random
 
 class Map(object):
     def __init__(self, window, camera):
@@ -30,10 +31,18 @@ class Map(object):
             for i in range(self.sizex):
                 # TODO: use noise to map spriteid
                 x = Mapsquare(map_string[j][i])
+                #add objects
+                rand = random.randint(1, 3)
+                if rand == 3:
+                    x.add_layer(0)
+                    x.borders[0] = 1
+                    x.borders[1] = 1
+                    x.borders[2] = 1
+                    x.borders[3] = 1
                 subSquares.append(x)
             self.mapsquares.append(subSquares)
         #load layer1
-        self.mapsquares[5][5].add_layer(0)
+        #self.mapsquares[5][5].add_layer(0)
         #set correct scale
         self.rescale_sprites(self.squaresize)
         
