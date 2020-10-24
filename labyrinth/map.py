@@ -13,17 +13,18 @@ class Map(object):
         self.layer1 = list()
         self.layer1_scaled = list()
         #set variables
-        mapjson = loadmap("map1.map")
+        mapjson = loadmap("map2.map")
         self.sizex = mapjson['sizex']
         self.sizey = mapjson['sizey']
         self.window_width = window.width
         self.window_height = window.height
         self.squaresize = int(camera.boxsize)
         #load sprites
-        self.layer0.append(pygame.image.load("assets/images/ground0.png").convert())
+        self.layer0.append(pygame.image.load("assets/images/water.png").convert())
+        self.layer0.append(pygame.image.load("assets/images/beach.png").convert())
         self.layer0.append(pygame.image.load("assets/images/ground1.png").convert())
-        self.layer0.append(pygame.image.load("assets/images/ground2.png").convert())
         self.layer1.append(pygame.image.load("assets/images/flag.png").convert_alpha())
+        self.layer1.append(pygame.image.load("assets/images/tree.png").convert_alpha())
         #create map
         #load layer0
         
@@ -36,7 +37,9 @@ class Map(object):
                 x = Mapsquare(map_string0[j][i])
                 #add objects
                 if map_string1[i][j] == 1:
-                    x.add_layer(0)
+
+                    x.add_layer(random.randint(0, 1))
+                    x.set_collider(True)
                 subSquares.append(x)
             self.mapsquares.append(subSquares)
         

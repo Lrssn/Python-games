@@ -48,12 +48,13 @@ class Camera:
 
 window = Window()
 camera = Camera(window.width, window.height)
-screen = pygame.display.set_mode([window.width, window.height])
+flags = pygame.FULLSCREEN | pygame.HWACCEL | pygame.DOUBLEBUF
+screen = pygame.display.set_mode([window.width, window.height], flags = flags )
 clock = pygame.time.Clock()
 
 # game init
 
-player = Player(camera.boxsize, camera.bufferzone)
+player = Player(camera.boxsize, camera.bufferzone) 
 map = Map(window, camera)
 camera.mapsize = (map.sizex, map.sizey)
 text = Text_renderer()
