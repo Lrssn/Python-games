@@ -4,10 +4,11 @@ class Mapsquare(object):
     def __init__(self, spriteid = 0):
         self.spriteids = list()
         self.spriteids.append(spriteid)
-        self.collider = false
+        self.collider = False
     
     def render(self, screen, rect, sprite):
         #render with correct scale
+        self.rect = rect
         screen.blit(sprite, rect)
 
     def add_layer(self, id):

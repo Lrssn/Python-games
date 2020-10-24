@@ -13,24 +13,6 @@ class Map(object):
         self.layer1 = list()
         self.layer1_scaled = list()
         #set variables
-        #sx = 100
-        #map_img = createmap(sizex = 800, sizey = 600, scale = 200, octaves = 6, persistence = 0.5, lacunarity = 2.0)
-        #cellular = cellular_automata(sx,sx)
-        #layer1 = numpy.zeros((sx, sx))
-        #for i in range(sx):
-        #    subSquares = []
-        #    for j in range(sx):
-        #        x = Mapsquare(int(map_img[i][j]))
-        #        if map_img[i][j] == 2 and cellular[i][j] == 1:
-        #            x.add_layer(1)
-        #        else:
-        #            x.add_layer(0)
-        #        subSquares.append(x)
-                
-        #    self.mapsquares.append(subSquares)
-        #self.sizex = sx
-        #self.sizey = sx
-        #self.save_map(1)
         mapjson = loadmap("map1.map")
         self.sizex = mapjson['sizex']
         self.sizey = mapjson['sizey']
@@ -55,11 +37,8 @@ class Map(object):
                 #add objects
                 if map_string1[i][j] == 1:
                     x.add_layer(0)
-                    x.set_collider(True)
                 subSquares.append(x)
             self.mapsquares.append(subSquares)
-
-
         
         #set correct scale
         self.rescale_sprites(self.squaresize)

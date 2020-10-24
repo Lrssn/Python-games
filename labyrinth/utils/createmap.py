@@ -3,7 +3,7 @@ import noise
 import numpy
 import imageio
 
-def createmap(sizex, sizey, scale, octaves, persistence, lacunarity):
+def createmap(sizex, sizey, scale= 200, octaves=6, persistence=0.5, lacunarity=2.0, thresholds = [0.5]):
     img = numpy.zeros((sizey, sizex))
     for i in range(sizey):
         for j in range(sizex):
@@ -18,12 +18,10 @@ def createmap(sizex, sizey, scale, octaves, persistence, lacunarity):
     set_image = numpy.zeros(img.shape)
     for i in range(sizey):
         for j in range(sizex):
-            if img[i][j] < 0.4:
-                set_image[i][j] = 0
-            elif img[i][j] < 0.42:
-                set_image[i][j] = 1
-            elif img[i][j] < 1.0:
-                set_image[i][j] = 2
+            for k in range(len(thresholds)):
+                if img[i][j] <= thresholds[k]:
+                    set_image[i][j] = k
+                    break
 
     return set_image
 
