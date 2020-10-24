@@ -95,7 +95,7 @@ class Player(object):
         self.animObj.play()
         self.rotate(0)
 
-    movementspeed = 100
+    movementspeed = 1000
     angle = 0
     pos = [120,120]
     rects = [(0, 0, 16, 16),

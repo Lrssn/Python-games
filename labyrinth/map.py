@@ -1,6 +1,7 @@
 import pygame, json
 from mapsquare import *
 from utils.map_utils import *
+from utils.createmap import *
 import random
 
 class Map(object):
@@ -12,6 +13,24 @@ class Map(object):
         self.layer1 = list()
         self.layer1_scaled = list()
         #set variables
+        #sx = 100
+        #map_img = createmap(sizex = 800, sizey = 600, scale = 200, octaves = 6, persistence = 0.5, lacunarity = 2.0)
+        #cellular = cellular_automata(sx,sx)
+        #layer1 = numpy.zeros((sx, sx))
+        #for i in range(sx):
+        #    subSquares = []
+        #    for j in range(sx):
+        #        x = Mapsquare(int(map_img[i][j]))
+        #        if map_img[i][j] == 2 and cellular[i][j] == 1:
+        #            x.add_layer(1)
+        #        else:
+        #            x.add_layer(0)
+        #        subSquares.append(x)
+                
+        #    self.mapsquares.append(subSquares)
+        #self.sizex = sx
+        #self.sizey = sx
+        #self.save_map(1)
         mapjson = loadmap("map1.map")
         self.sizex = mapjson['sizex']
         self.sizey = mapjson['sizey']
@@ -21,19 +40,20 @@ class Map(object):
         #load sprites
         self.layer0.append(pygame.image.load("assets/images/ground0.png").convert())
         self.layer0.append(pygame.image.load("assets/images/ground1.png").convert())
+        self.layer0.append(pygame.image.load("assets/images/ground2.png").convert())
         self.layer1.append(pygame.image.load("assets/images/flag.png").convert_alpha())
         #create map
         #load layer0
         
-        map_string = parsemap(mapjson['layer0'], mapjson['sizex'], mapjson['sizey'])
+        map_string0 = parsemap(mapjson['layer0'], mapjson['sizex'], mapjson['sizey'])
+        map_string1 = parsemap(mapjson['layer1'], mapjson['sizex'], mapjson['sizey'])
+
         for j in range(self.sizey):
             subSquares = []
             for i in range(self.sizex):
-                # TODO: use noise to map spriteid
-                x = Mapsquare(map_string[j][i])
+                x = Mapsquare(map_string0[j][i])
                 #add objects
-                rand = random.randint(1, 3)
-                if rand == 3:
+                if map_string1[i][j] == 1:
                     x.add_layer(0)
                     x.borders[0] = 1
                     x.borders[1] = 1
@@ -41,8 +61,9 @@ class Map(object):
                     x.borders[3] = 1
                 subSquares.append(x)
             self.mapsquares.append(subSquares)
-        #load layer1
-        #self.mapsquares[5][5].add_layer(0)
+
+
+        
         #set correct scale
         self.rescale_sprites(self.squaresize)
         
@@ -58,7 +79,6 @@ class Map(object):
                 mapsquare.render(screen, rect, self.layer0_scaled[mapsquare.spriteids[0]])
                 
                 #layer 1
-                #if  int(pos[1]/self.squaresize)+j == 5 and int(pos[0]/self.squaresize)+i == 5:
                 if len(mapsquare.spriteids) >= 2:
                     mapsquare.render(screen, rect, self.layer1_scaled[mapsquare.spriteids[1]])
                     # if layer 2 
@@ -80,9 +100,10 @@ class Map(object):
             image = pygame.transform.scale(self.layer1[i], (self.squaresize, self.squaresize))
             self.layer1_scaled.append(image)
 
-    def savemap(self):
-        savemap("map1.map", self.mapsquares, self.sizex, self.sizey)
-        print("map saved")
+    def save_map(self, level):
+        mapname = "map" + str(level) + ".map"
+        savemap(mapname, self.mapsquares, self.sizex, self.sizey)
+        print("map "  + str(mapname) +  " saved")
     
     
     

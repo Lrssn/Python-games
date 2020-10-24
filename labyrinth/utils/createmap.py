@@ -5,11 +5,6 @@ import imageio
 
 def createmap(sizex, sizey, scale, octaves, persistence, lacunarity):
     img = numpy.zeros((sizey, sizex))
-    water = [65,105,225]
-    grass = [34,139,34]
-    forest = [0, 255, 12]
-    farmland = [139,69,19]
-    beach = [238, 214, 175]
     for i in range(sizey):
         for j in range(sizex):
             img[i][j] = noise.pnoise2(i/scale, 
@@ -23,9 +18,9 @@ def createmap(sizex, sizey, scale, octaves, persistence, lacunarity):
     set_image = numpy.zeros(img.shape)
     for i in range(sizey):
         for j in range(sizex):
-            if img[i][j] < -0.02:
+            if img[i][j] < 0.4:
                 set_image[i][j] = 0
-            elif img[i][j] < 0:
+            elif img[i][j] < 0.42:
                 set_image[i][j] = 1
             elif img[i][j] < 1.0:
                 set_image[i][j] = 2

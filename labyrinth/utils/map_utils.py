@@ -17,12 +17,14 @@ def parsemap(map_string, sizex, sizey):
     return final_map
 
 def savemap(map_name, map_string, sizex, sizey):
-    x = ''
+    layer0 = ''
+    layer1 = ''
     for i in range(sizey):
         for j in range(sizex):
-            x += str(map_string[j][i].spriteids[0]) + " "
+            layer0 += str(map_string[j][i].spriteids[0]) + " "
+            layer1 += str(map_string[j][i].spriteids[1]) + " "
     
-    y = json.dumps({"map_name":map_name, "sizex": sizex, "sizey":sizey, "layer0": x}, indent=4)
+    y = json.dumps({"map_name":map_name, "sizex": sizex, "sizey":sizey, "layer0": layer0, "layer1":layer1}, indent=4)
     f = open('assets/maps/' + map_name, "w")
     f.write(y)
     f.close()
