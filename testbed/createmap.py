@@ -29,25 +29,8 @@ def createmap(sizex, sizey, scale, octaves, persistence, lacunarity):
                 set_image[i][j] = 1
             elif img[i][j] < 1.0:
                 set_image[i][j] = 2
-    forest_img = cellular_automata(sizex, sizey)
-    farmland_img = cellular_automata(sizex, sizey, 0.7, 6, 4, 6, 3)
-    color_image = numpy.zeros(img.shape+(3,))
-    for i in range(sizey):
-        for j in range(sizex):
-            if set_image[i][j] == 0:
-                color_image[i][j] = water
-            elif set_image[i][j] == 1:
-                color_image[i][j] = beach
-            elif set_image[i][j] == 2:
-                if forest_img[i][j] == 0:
-                    color_image[i][j] = forest
-                elif forest_img[i][j] == 1:
-                    if farmland_img[i][j] == 0:
-                        color_image[i][j] = farmland
-                    elif farmland_img[i][j] == 1:
-                        color_image[i][j] = grass
 
-    imageio.imwrite('noise.png', color_image)
+    return set_image
 
 def cellular_automata(sizex, sizey, live_chance = 0.4, nrofsimsteps = 7, starvationLimit = 4, overpopLimit = 6, birthNumber = 4):
     shape = (sizey, sizex)
@@ -75,17 +58,8 @@ def cellular_automata(sizex, sizey, live_chance = 0.4, nrofsimsteps = 7, starvat
                 else:
                     if farmtiles == birthNumber:
                         temp_map[i][j] = live
-
         new_map = temp_map
-    noiseimg = numpy.ones(shape+(3,))
-    for i in range(shape[0]):
-        for j in range(shape[1]):
-            if new_map[i][j] == 0:
-                noiseimg[i][j] = [245, 222, 179]
-            else:
-                noiseimg[i][j] = [34,139,34]
-    
-    imageio.imwrite('noise1.png', noiseimg)
+
     return new_map
 
 def nr_of_farmtiles(old_map, x, y, shape):
@@ -109,3 +83,21 @@ def nr_of_farmtiles(old_map, x, y, shape):
     
     #print("finished farmlands")
     return farmtiles
+
+def save_to_rgb_image(map, colors):
+    shape = map.shape
+    img = numpy.ones(shape+(3,))
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            img[i][j] = colors[img[i][j]]
+            
+    imageio.imwrite('image.png', img)
+
+def save_to_greyscale_image(map):
+    shape = map.shape
+    img = numpy.ones(shape)
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            img[i][j] = map[i][j]*255
+            
+    imageio.imwrite('image.png', img)
