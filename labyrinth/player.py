@@ -1,5 +1,6 @@
 import pygame
 import pyganim
+import map
 class Player(object):
     
     def __init__(self, size, bufferzone):
@@ -15,7 +16,7 @@ class Player(object):
         self.rect.x = int(self.pos[0])
         self.rect.y = int(self.pos[1])
 
-    def move(self, dx, dy, deltatime, camera):
+    def move(self, dx, dy, deltatime, camera, map):
         # rotation
 
         if dx == 1 and dy == 0:
@@ -54,7 +55,16 @@ class Player(object):
         
         if camera_xdiff != 0 or camera_ydiff != 0:
             camera.move(camera_xdiff, camera_ydiff)
-        
+             
+            # get player worldpos
+            # check if right has collider
+            # check if player collides with right
+            # move rigth out
+            # do the same for up, down and left
+            # something like this:  
+            #if dx > 0 and self.rect.colliderect(map.mapsquares[int(self.pos[0]+camera.position[0])][int(self.pos[1]+camera.position[1])].rect):: # Moving right; Hit the left side of the wall
+                #self.rect.right = wall.rect.left
+                
         self.pos[0] += (xdiff - camera_xdiff)
         self.pos[1] += (ydiff - camera_ydiff)
         self.rect.x = int(self.pos[0])

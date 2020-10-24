@@ -55,10 +55,7 @@ class Map(object):
                 #add objects
                 if map_string1[i][j] == 1:
                     x.add_layer(0)
-                    x.borders[0] = 1
-                    x.borders[1] = 1
-                    x.borders[2] = 1
-                    x.borders[3] = 1
+                    x.set_collider(True)
                 subSquares.append(x)
             self.mapsquares.append(subSquares)
 

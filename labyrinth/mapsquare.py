@@ -4,7 +4,7 @@ class Mapsquare(object):
     def __init__(self, spriteid = 0):
         self.spriteids = list()
         self.spriteids.append(spriteid)
-        self.borders = [0, 0, 0, 0]
+        self.collider = false
     
     def render(self, screen, rect, sprite):
         #render with correct scale
@@ -13,5 +13,5 @@ class Mapsquare(object):
     def add_layer(self, id):
         self.spriteids.append(id)
     
-    def set_borders(self, borders):
-        self.borders = borders
+    def set_collider(self, choice):
+        self.collider = choice
