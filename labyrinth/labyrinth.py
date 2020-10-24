@@ -6,6 +6,7 @@ from pygame.locals import *
 from player import *
 from map import *
 from utils.text_renderer import *
+from utils.camera_utils import *
 
 # system init
 pygame.init()
@@ -92,6 +93,7 @@ while running:
                 player.rescale_sprites(camera.boxsize)
                 map.rescale_sprites(camera.boxsize)
 
+
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             #process mouseclicks
             pos = pygame.mouse.get_pos()
@@ -109,7 +111,7 @@ while running:
         movement[1] += 1
 
     if movement[0] != 0 or movement[1] != 0:
-        player.move(movement[0], movement[1], deltatime, camera)
+        player.move(movement[0], movement[1], deltatime, camera, map)
 
     # render
     screen.fill(window.bg_color)

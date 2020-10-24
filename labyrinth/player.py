@@ -1,12 +1,15 @@
 import pygame
 import pyganim
-import map
+from utils.camera_utils import *
+
+
+
 class Player(object):
     
     def __init__(self, size, bufferzone):
         self.squaresize = size
         self.rect = pygame.Rect(120, 120, size, size)
-        self.images = pyganim.getImagesFromSpriteSheet("assets/images/test player.png", rects = self.rects)
+        self.images = pyganim.getImagesFromSpriteSheet("assets/images/test player1.png", rects = self.rects)
         self.rescale_sprites(size)
         self.bufferzone = bufferzone
     
@@ -56,19 +59,36 @@ class Player(object):
         if camera_xdiff != 0 or camera_ydiff != 0:
             camera.move(camera_xdiff, camera_ydiff)
              
-            # get player worldpos
-            # check if right has collider
-            # check if player collides with right
-            # move rigth out
-            # do the same for up, down and left
-            # something like this:  
-            #if dx > 0 and self.rect.colliderect(map.mapsquares[int(self.pos[0]+camera.position[0])][int(self.pos[1]+camera.position[1])].rect):: # Moving right; Hit the left side of the wall
-                #self.rect.right = wall.rect.left
-                
+
+            
+
         self.pos[0] += (xdiff - camera_xdiff)
         self.pos[1] += (ydiff - camera_ydiff)
         self.rect.x = int(self.pos[0])
         self.rect.y = int(self.pos[1])
+        # get player worldpos
+        # check if right has collider
+        # check if player collides with right
+        # move rigth out
+        # do the same for up, down and left
+        # something like this:  
+        playersquare = current_square(camera, self.rect.center)
+        if dx > 0:
+            rightsquare = map.mapsquares[playersquare[1]][playersquare[0]+1]
+            if rightsquare.collider == True and self.rect.colliderect(rightsquare.rect):
+                self.move_to(rightsquare.rect.left-self.squaresize, self.pos[1]) 
+        elif dx < 0:
+            leftsquare = map.mapsquares[playersquare[1]][playersquare[0]-1]
+            if leftsquare.collider == True and self.rect.colliderect(leftsquare.rect):
+                self.move_to(leftsquare.rect.right, self.pos[1]) 
+        if dy > 0:
+            bottomsquare = map.mapsquares[playersquare[1]+1][playersquare[0]]
+            if bottomsquare.collider == True and self.rect.colliderect(bottomsquare.rect):
+                self.move_to(self.pos[0], bottomsquare.rect.top-self.squaresize) 
+        elif dy < 0:
+            topsquare = map.mapsquares[playersquare[1]-1][playersquare[0]]
+            if topsquare.collider == True and self.rect.colliderect(topsquare.rect):
+                self.move_to(self.pos[0], topsquare.rect.bottom) 
 
     def get_pos(self):
         return self.pos
@@ -105,7 +125,7 @@ class Player(object):
         self.animObj.play()
         self.rotate(0)
 
-    movementspeed = 1000
+    movementspeed = 100
     angle = 0
     pos = [120,120]
     rects = [(0, 0, 16, 16),
