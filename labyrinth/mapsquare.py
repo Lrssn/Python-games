@@ -16,3 +16,6 @@ class Mapsquare(object):
     
     def set_collider(self, choice):
         self.collider = choice
+
+    def get_collider(self):
+        return self.collider
