@@ -11,7 +11,6 @@ window = Window()
 screen = pygame.display.set_mode([window.width, window.height])
 clock = pygame.time.Clock()
 rect = pygame.Rect(0, 0, window.width, window.height)
-
 running = True
 while running:
     # system
@@ -32,7 +31,7 @@ while running:
     
     #renderloop
     pygame.draw.rect(screen, (0, 255, 255), rect)
-
+    
     pygame.display.flip()
     pygame.event.pump()
 

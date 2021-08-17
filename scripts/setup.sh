@@ -13,4 +13,4 @@ then
 fi
 
 #install libraries from pip
-pip install numpy pyganim
+pip install numpy pyganim imageio noise

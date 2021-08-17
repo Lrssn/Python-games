@@ -7,6 +7,7 @@ from player import *
 from map import *
 from utils.text_renderer import *
 from utils.camera_utils import *
+from utils.gui import *
 
 # system init
 pygame.init()
